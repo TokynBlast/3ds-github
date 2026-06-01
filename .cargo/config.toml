@@ -2,4 +2,4 @@
 target = "armv6k-nintendo-3ds"
 
 [unstable]
-build-std = ["std", "core", "alloc"]
+build-std = ["std", "core", "alloc", "panic_abort"]
