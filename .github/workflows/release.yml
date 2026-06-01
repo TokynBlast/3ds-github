@@ -36,7 +36,7 @@ jobs:
 
       - name: Compile Rust ELF Binary
         run: |
-          cargo build --release --target armv6k-nintendo-3ds -Z build-std=core,alloc,std
+          cargo build --release --target armv6k-nintendo-3ds -Z build-std=core,alloc,std,panic_abort
 
       - name: Build 3DSX and CIA Bundles
         run: |
