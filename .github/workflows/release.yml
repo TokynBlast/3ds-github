@@ -18,6 +18,11 @@ jobs:
       - name: Checkout Code Repository
         uses: actions/checkout@v4
 
+      - name: Install System Dependencies (Clang & Headers)
+        run: |
+          apt-get update
+          apt-get install -y clang libclang-dev llvm
+
       - name: Extract Tag Name
         id: get_version
         run: |
