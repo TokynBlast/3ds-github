@@ -19,10 +19,22 @@ jobs:
       - name: Checkout Code Repository
         uses: actions/checkout@v4
 
-      - name: Install System Dependencies (Clang & Headers)
+      - name: Install System Dependencies
         run: |
           apt-get update
-          apt-get install -y clang libclang-dev llvm
+          apt-get install -y clang libclang-dev llvm wget unzip
+
+          wget https://github.com/3DSGuy/Project_CTR/releases/download/v0.18.3/makerom-v0.18.3-ubuntu_x86_64.zip
+          unzip makerom-v0.18.3-ubuntu_x86_64.zip
+          mv makerom /usr/local/bin/makerom
+          chmod +x /usr/local/bin/makerom
+
+          wget https://github.com/Epicpkmn11/bannertool/releases/download/v1.2.0/bannertool.zip
+          unzip bannertool.zip -d bannertool_dir
+          mv bannertool_dir/linux-x86_64/bannertool /usr/local/bin/bannertool
+          chmod +x /usr/local/bin/bannertool
+
+          rm -rf makerom-v0.18.3-ubuntu_x86_64.zip bannertool.zip bannertool_dir
 
       - name: Extract Tag or Manual Version Name
         id: get_version
