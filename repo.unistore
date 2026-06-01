@@ -1,0 +1,32 @@
+{
+  "storeInfo": {
+    "title": "Mei's Programming Tools 'N' Stuff",
+    "author": "MeiMei",
+    "description": "A bunch of awesome programming tools!",
+    "version": 1
+  },
+  "apps": [
+    {
+      "title": "GitHub Viewer",
+      "author": "MeiMei",
+      "description": "View and interact with GitHub, straight from your 3DS!",
+      "category": "Utility",
+      "version": "0.0.0",
+      "assets": [
+        {
+          "type": "cia",
+          "url": "https://github.com/TokynBlast/3ds-github/releases/download/v0.0.1/ds.cia",
+          "filename": "mei-github.cia",
+          "description": "Installable CIA for the 3DS Home Screen"
+        },
+        {
+          "type": "3dsx",
+          "url": "https://github.com/TokynBlast/3ds-github/releases/download/v0.0.1/ds.3dsx",
+          "filename": "mei-github.3dsx",
+          "path": "sd:/3ds/github.3dsx",
+          "description": "Executable for the Homebrew Launcher"
+        }
+      ]
+    }
+  ]
+}
