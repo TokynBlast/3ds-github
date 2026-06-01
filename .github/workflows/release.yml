@@ -75,22 +75,36 @@ jobs:
           import os
 
           tag_version = "${{ steps.get_version.outputs.VERSION }}"
+          is_unstable = tag_version.startswith("unstable_")
           unistore_path = "unistore-repo/repo.unistore"
 
-          with open(unistore_path, "r") as f:
-              data = json.load(f)
+            with open(unistore_path, "r") as f:
+                data = json.load(f)
 
-          for app in data["apps"]:
-              if app["title"] == "GitHub Viewer":
-                  app["version"] = tag_version
-                  for asset in app["assets"]:
-                      if asset["type"] == "cia":
-                          asset["url"] = f"https://github.com/TokynBlast/3ds-github/releases/download/{tag_version}/github_viewer.cia"
-                      elif asset["type"] == "3dsx":
-                          asset["url"] = f"https://github.com/TokynBlast/3ds-github/releases/download/{tag_version}/github_viewer.3dsx"
+            for app in data["apps"]:
+                if app["title"] == "GitHub Viewer":
+                    # Update the root app version display text to match the latest tag pushed
+                    app["version"] = tag_version
 
-          with open(unistore_path, "w") as f:
-              json.dump(data, f, indent=2)
+                    for asset in app["assets"]:
+                        is_asset_unstable = "[UNSTABLE]" in asset.get("description", "")
+
+                        # If we pushed an unstable tag, update only the UNSTABLE assets
+                        if is_unstable and is_asset_unstable:
+                            if asset["type"] == "cia":
+                                asset["url"] = f"https://github.com/TokynBlast/3ds-github/releases/download/{tag_version}/github_viewer.cia"
+                            elif asset["type"] == "3dsx":
+                                asset["url"] = f"https://github.com/TokynBlast/3ds-github/releases/download/{tag_version}/github_viewer.3dsx"
+
+                        # If we pushed a stable tag, update only the normal assets
+                        elif not is_unstable and not is_asset_unstable:
+                            if asset["type"] == "cia":
+                                asset["url"] = f"https://github.com/TokynBlast/3ds-github/releases/download/{tag_version}/github_viewer.cia"
+                            elif asset["type"] == "3dsx":
+                                asset["url"] = f"https://github.com/TokynBlast/3ds-github/releases/download/{tag_version}/github_viewer.3dsx"
+
+            with open(unistore_path, "w") as f:
+                json.dump(data, f, indent=2)
 
       - name: Push Updated UniStore to External Repo
         run: |
