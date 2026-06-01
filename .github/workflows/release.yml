@@ -86,25 +86,18 @@ jobs:
           with open(unistore_path, "r") as f:
               data = json.load(f)
 
-          # Increment revision counter so Universal-Updater triggers a refresh on the console
           if "revision" in data["storeInfo"]:
               data["storeInfo"]["revision"] += 1
 
           for app in data["storeContent"]:
               if app["info"]["title"] == "GitHub Viewer":
-                  # Update target application text display
                   app["info"]["version"] = tag_version
 
-                  # Target the specific scripting arrays depending on tag profile
                   if is_unstable:
-                      # Update Unstable CIA link (always index 0 step of download script block)
                       app["script_unstable_cia"][0]["file"] = f"https://github.com/TokynBlast/3ds-github/releases/download/{tag_version}/github_viewer.cia"
-                      # Update Unstable 3DSX link
                       app["script_unstable_3dsx"][0]["file"] = f"https://github.com/TokynBlast/3ds-github/releases/download/{tag_version}/github_viewer.3dsx"
                   else:
-                      # Update Stable CIA link
                       app["script"][0]["file"] = f"https://github.com/TokynBlast/3ds-github/releases/download/{tag_version}/github_viewer.cia"
-                      # Update Stable 3DSX link
                       app["script_3dsx"][0]["file"] = f"https://github.com/TokynBlast/3ds-github/releases/download/{tag_version}/github_viewer.3dsx"
 
           with open(unistore_path, "w") as f:
