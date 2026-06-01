@@ -65,30 +65,20 @@ jobs:
 
       - name: Build 3DSX and CIA Bundles
         run: |
-          # 1. Create target folder if it doesn't exist
           mkdir -p target
 
-          # 2. Fix bannertool flags: changed -a to -p for publisher
-          bannertool makesmdh \
-            -s "GitHub Viewer" \
-            -l "Inspect GitHub repos natively" \
-            -p "MeiMei" \
-            -o target/github_viewer.smdh
+          # Assembled completely on one line so the runner shell can't split it up!
+          bannertool makesmdh -s "GitHub Viewer" -l "Inspect GitHub repos natively" -p "MeiMei" -o target/github_viewer.smdh
 
-          # 3. Locate the compiled ELF dynamically (handles ds.elf or github_viewer.elf)
+          # Locate the compiled ELF dynamically
           ELF_PATH=$(find target/armv6k-nintendo-3ds/release/ -name "*.elf" | head -n 1)
           echo "Found compiled ELF at: $ELF_PATH"
 
-          # 4. Convert ELF into the 3DSX executable
+          # Convert ELF into the 3DSX executable
           3dsxtool "$ELF_PATH" github_viewer.3dsx --smdh=target/github_viewer.smdh
 
-          # 5. Compile the installable CIA file using a template RSF setup
-          makerom -f cia \
-            -o github_viewer.cia \
-            -elf "$ELF_PATH" \
-            -smdh target/github_viewer.smdh \
-            -major 1 -minor 0 -micro 0 \
-            -titleid 000400000FFFFF00
+          # Compile the installable CIA file
+          makerom -f cia -o github_viewer.cia -elf "$ELF_PATH" -smdh target/github_viewer.smdh -major 1 -minor 0 -micro 0 -titleid 000400000FFFFF00
 
       - name: Create GitHub Release and Upload Binaries
         uses: softprops/action-gh-release@v3
