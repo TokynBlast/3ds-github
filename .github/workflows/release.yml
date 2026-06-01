@@ -65,18 +65,27 @@ jobs:
 
       - name: Build 3DSX and CIA Bundles
         run: |
+          # 1. Create target folder if it doesn't exist
+          mkdir -p target
+
+          # 2. Fix bannertool flags: changed -a to -p for publisher
           bannertool makesmdh \
             -s "GitHub Viewer" \
             -l "Inspect GitHub repos natively" \
-            -a "TokynBlast" \
+            -p "MeiMei" \
             -o target/github_viewer.smdh
 
-          3dsxtool target/armv6k-nintendo-3ds/release/github_viewer.elf github_viewer.3dsx --smdh=target/github_viewer.smdh
+          # 3. Locate the compiled ELF dynamically (handles ds.elf or github_viewer.elf)
+          ELF_PATH=$(find target/armv6k-nintendo-3ds/release/ -name "*.elf" | head -n 1)
+          echo "Found compiled ELF at: $ELF_PATH"
 
+          # 4. Convert ELF into the 3DSX executable
+          3dsxtool "$ELF_PATH" github_viewer.3dsx --smdh=target/github_viewer.smdh
+
+          # 5. Compile the installable CIA file using a template RSF setup
           makerom -f cia \
             -o github_viewer.cia \
-            -elf target/armv6k-nintendo-3ds/release/github_viewer.elf \
-            -rsf target/armv6k-nintendo-3ds/release/github_viewer.elf \
+            -elf "$ELF_PATH" \
             -smdh target/github_viewer.smdh \
             -major 1 -minor 0 -micro 0 \
             -titleid 000400000FFFFF00
