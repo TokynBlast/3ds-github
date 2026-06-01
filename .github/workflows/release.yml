@@ -5,6 +5,7 @@ on:
     tags:
       - 'v*'
       - 'unstable_v*'
+  workflow_dispatch:
 
 permissions:
   contents: write
@@ -23,11 +24,23 @@ jobs:
           apt-get update
           apt-get install -y clang libclang-dev llvm
 
-      - name: Extract Tag Name
+      - name: Extract Tag or Manual Version Name
         id: get_version
         run: |
-          TAG_NAME=${GITHUB_REF#refs/tags/}
+          # If triggered by a tag, use it. If triggered manually, default to a fallback layout.
+          if [[ "${GITHUB_REF}" == refs/tags/* ]]; then
+            TAG_NAME=${GITHUB_REF#refs/tags/}
+          else
+            TAG_NAME="unstable_manual_build"
+          fi
           echo "VERSION=$TAG_NAME" >> $GITHUB_OUTPUT
+
+      - name: Setup devkitARM Environment Paths
+        run: |
+          # Explicitly pass devkitARM paths to the runner environment so Cargo can find the linker
+          echo "DEVKITPRO=/opt/devkitpro" >> $GITHUB_ENV
+          echo "DEVKITARM=/opt/devkitpro/devkitARM" >> $GITHUB_ENV
+          echo "/opt/devkitpro/devkitARM/bin" >> $GITHUB_PATH
 
       - name: Install Rust Toolchain
         uses: dtolnay/rust-toolchain@nightly
@@ -46,12 +59,12 @@ jobs:
             -a "TokynBlast" \
             -o target/github_viewer.smdh
 
-          3dsxtool target/armv6k-nintendo-3ds/release/ds.elf github_viewer.3dsx --smdh=target/github_viewer.smdh
+          3dsxtool target/armv6k-nintendo-3ds/release/github_viewer.elf github_viewer.3dsx --smdh=target/github_viewer.smdh
 
           makerom -f cia \
             -o github_viewer.cia \
-            -elf target/armv6k-nintendo-3ds/release/ds.elf \
-            -rsf target/armv6k-nintendo-3ds/release/ds.elf \
+            -elf target/armv6k-nintendo-3ds/release/github_viewer.elf \
+            -rsf target/armv6k-nintendo-3ds/release/github_viewer.elf \
             -smdh target/github_viewer.smdh \
             -major 1 -minor 0 -micro 0 \
             -titleid 000400000FFFFF00
