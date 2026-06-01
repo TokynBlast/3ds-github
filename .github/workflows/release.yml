@@ -67,12 +67,8 @@ jobs:
         run: |
           mkdir -p target
 
-          bannertool makesmdh \
-            --short "3DS GitHub Viewer" \
-            --long "Inspect GitHub repos natively" \
-            --publisher "MeiMei" \
-            --icon icon.png \
-            --output target/github_viewer.smdh
+          # Uses full names with explicit equals signs to prevent argument parsing errors
+          bannertool makesmdh --shorttitle="GitHub Viewer" --longtitle="Inspect GitHub repos natively" --publisher="MeiMei" --icon="icon.png" --output="target/github_viewer.smdh"
 
           # Locate the compiled ELF dynamically
           ELF_PATH=$(find target/armv6k-nintendo-3ds/release/ -name "*.elf" | head -n 1)
