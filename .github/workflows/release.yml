@@ -67,8 +67,16 @@ jobs:
         run: |
           mkdir -p target
 
-          # Assembled completely on one line so the runner shell can't split it up!
-          bannertool makesmdh -s "GitHub Viewer" -l "Inspect GitHub repos natively" -p "MeiMei" -o target/github_viewer.smdh
+          # Generate a quick dummy 48x48 PNG icon so bannertool doesn't complain about a missing icon
+          python3 -c "from PIL import Image; Image.new('RGBA', (48, 48), (0, 100, 250, 255)).save('target/icon.png')"
+
+          # Use the updated long-form arguments required by modern bannertool v1.2+
+          bannertool makesmdh \
+            --short "3DS GitHub Viewer" \
+            --long "Inspect GitHub repos natively" \
+            --publisher "MeiMei" \
+            --icon target/icon.png \
+            --output target/github_viewer.smdh
 
           # Locate the compiled ELF dynamically
           ELF_PATH=$(find target/armv6k-nintendo-3ds/release/ -name "*.elf" | head -n 1)
