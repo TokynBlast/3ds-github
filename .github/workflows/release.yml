@@ -113,7 +113,7 @@ jobs:
               data["storeInfo"]["revision"] += 1
 
           for app in data["storeContent"]:
-              if app["info"]["title"] == "GitHub Viewer":
+              if app["info"]["title"] == "3DS GitHub":
                   app["info"]["version"] = tag_version
 
                   if is_unstable:
