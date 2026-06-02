@@ -61,18 +61,26 @@ jobs:
           mkdir -p target
           export PATH="/opt/devkitpro/tools/bin:$PATH"
 
-          # 1. Generate the SMDH metadata
+          # 1. Generate the SMDH metadata natively
           smdhtool --create "3DS GitHub" "Inspect GitHub repos natively" "MeiMei" icon.png target/github_viewer.smdh
 
           # 2. Locate the compiled ELF dynamically
           ELF_PATH=$(find target/armv6k-nintendo-3ds/release/ -name "*.elf" | head -n 1)
           echo "Found compiled ELF at: $ELF_PATH"
 
-          # 3. Convert ELF into the 3DSX executable
+          # 3. Convert ELF into the standard 3DSX executable
           3dsxtool "$ELF_PATH" github_viewer.3dsx --smdh=target/github_viewer.smdh
 
-          # 4. Compile the installable CIA file
-          makerom -f cia -o github_viewer.cia -target t -i github_viewer.3dsx:0:0
+          # 4. Extract the properly formatted 3DS code binary from the 3DSX file
+          stripex github_viewer.3dsx target/code.bin
+
+          # 5. Compile the installable CIA file using the stripped code binary
+          makerom -f cia \
+            -o github_viewer.cia \
+            -target t \
+            -code target/code.bin \
+            -icon target/github_viewer.smdh \
+            -major 1 -minor 0 -micro 0
 
       - name: Create GitHub Release and Upload Binaries
         uses: softprops/action-gh-release@v3
