@@ -7,7 +7,8 @@ fn main() {
     let mut bottom_screen = gfx.bottom_screen.borrow_mut();
 
     while apt.main_loop() {
-        let buffer = top_screen.raw_framebuffer();
+        let top_buff = top_screen.raw_framebuffer();
+        let bottom_buff = bottom_screen.raw_framebuffer();
         unsafe {
             std::ptr::copy_nonoverlapping(
               image_bytes.as_ptr(),
