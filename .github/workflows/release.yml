@@ -59,8 +59,6 @@ jobs:
       - name: Build 3DSX and CIA Bundles
         run: |
           mkdir -p target
-
-          # Explicitly add the devkitpro tool folder to the executing shell path
           export PATH="/opt/devkitpro/tools/bin:$PATH"
 
           # 1. Generate the SMDH metadata
