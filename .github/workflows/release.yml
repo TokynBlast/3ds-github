@@ -223,7 +223,7 @@ jobs:
           import os
 
           tag_version = "${{ steps.get_version.outputs.VERSION }}"
-          is_unstable = tag_version.startswith("unstable_")
+          is_unstable = "unstable" in tag_version
           unistore_path = "unistore-repo/meimei-prog-tools.unistore"
 
           with open(unistore_path, "r") as f:
@@ -236,12 +236,17 @@ jobs:
               if app["info"]["title"] == "3DS GitHub":
                   app["info"]["version"] = tag_version
 
+                  # Fixed to target your exact JSON arrays
                   if is_unstable:
-                      app["script_unstable_cia"][0]["file"] = f"https://github.com/TokynBlast/3ds-github/releases/download/{tag_version}/github_viewer.cia"
-                      app["script_unstable_3dsx"][0]["file"] = f"https://github.com/TokynBlast/3ds-github/releases/download/{tag_version}/github_viewer.3dsx"
+                      if "unstable_cia" in app and len(app["unstable_cia"]) > 0:
+                          app["unstable_cia"][0]["file"] = f"https://github.com/TokynBlast/3ds-github/releases/download/{tag_version}/github_viewer.cia"
+                      if "unstable_3dsx" in app and len(app["unstable_3dsx"]) > 0:
+                          app["unstable_3dsx"][0]["file"] = f"https://github.com/TokynBlast/3ds-github/releases/download/{tag_version}/github_viewer.3dsx"
                   else:
-                      app["script"][0]["file"] = f"https://github.com/TokynBlast/3ds-github/releases/download/{tag_version}/github_viewer.cia"
-                      app["script_3dsx"][0]["file"] = f"https://github.com/TokynBlast/3ds-github/releases/download/{tag_version}/github_viewer.3dsx"
+                      if "stable_cia" in app and len(app["stable_cia"]) > 0:
+                          app["stable_cia"][0]["file"] = f"https://github.com/TokynBlast/3ds-github/releases/download/{tag_version}/github_viewer.cia"
+                      if "stable_3dsx" in app and len(app["stable_3dsx"]) > 0:
+                          app["stable_3dsx"][0]["file"] = f"https://github.com/TokynBlast/3ds-github/releases/download/{tag_version}/github_viewer.3dsx"
 
           with open(unistore_path, "w") as f:
               json.dump(data, f, indent=2)
