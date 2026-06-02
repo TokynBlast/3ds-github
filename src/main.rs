@@ -1,4 +1,4 @@
-use ctru::{self, services::gfx};
+use ctru;
 use ctru::console::Console;
 use ctru::services::gfx::Gfx;
 
