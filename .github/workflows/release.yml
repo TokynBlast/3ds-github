@@ -4,7 +4,7 @@ on:
   push:
     tags:
       - 'v*'
-      - 'unstable_v*'
+      - 'unstable'
   workflow_dispatch:
 
 permissions:
