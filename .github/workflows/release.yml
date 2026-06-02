@@ -37,7 +37,7 @@ jobs:
           if [ "${{ github.ref_type }}" = "tag" ]; then
             echo "VERSION=${{ github.ref_name }}" >> $GITHUB_OUTPUT
           else
-            echo "VERSION=unstable_manual_build" >> $GITHUB_OUTPUT
+            echo "VERSION=unstable_build" >> $GITHUB_OUTPUT
           fi
 
       - name: Setup devkitARM Environment Paths
