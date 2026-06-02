@@ -18,6 +18,8 @@ fn main() {
 
         top_screen.flush_buffers();
         top_screen.swap_buffers();
+        bottom_screen.flush_buffers();
+        bottom_screen.swap_buffers();
 
         gfx.wait_for_vblank();
     }
