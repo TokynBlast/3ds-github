@@ -19,7 +19,7 @@ jobs:
       - name: Checkout Code Repository
         uses: actions/checkout@v4
 
-      - name: Install System Dependencies
+      - name: Install System Dependencies (Clang, Headers, 3DS Tools)
         run: |
           apt-get update
           apt-get install -y clang libclang-dev llvm wget unzip
@@ -29,17 +29,11 @@ jobs:
           mv makerom /usr/local/bin/makerom
           chmod +x /usr/local/bin/makerom
 
-          wget https://github.com/Epicpkmn11/bannertool/releases/download/v1.2.2/bannertool.zip
-          unzip bannertool.zip -d bannertool_dir
-          mv bannertool_dir/linux-x86_64/bannertool /usr/local/bin/bannertool
-          chmod +x /usr/local/bin/bannertool
-
-          rm -rf makerom-v0.19.0-ubuntu_x86_64.zip bannertool.zip bannertool_dir
+          rm -rf makerom-v0.19.0-ubuntu_x86_64.zip
 
       - name: Extract Tag or Manual Version Name
         id: get_version
         run: |
-          # If triggered by a tag, use it. If triggered manually, default to a fallback layout.
           if [[ "${GITHUB_REF}" == refs/tags/* ]]; then
             TAG_NAME=${GITHUB_REF#refs/tags/}
           else
@@ -49,7 +43,6 @@ jobs:
 
       - name: Setup devkitARM Environment Paths
         run: |
-          # Explicitly pass devkitARM paths to the runner environment so Cargo can find the linker
           echo "DEVKITPRO=/opt/devkitpro" >> $GITHUB_ENV
           echo "DEVKITARM=/opt/devkitpro/devkitARM" >> $GITHUB_ENV
           echo "/opt/devkitpro/devkitARM/bin" >> $GITHUB_PATH
@@ -67,17 +60,20 @@ jobs:
         run: |
           mkdir -p target
 
-          # Uses full names with explicit equals signs to prevent argument parsing errors
-          bannertool makesmdh --shorttitle="GitHub Viewer" --longtitle="Inspect GitHub repos natively" --publisher="MeiMei" --icon="icon.png" --output="target/github_viewer.smdh"
+          # Explicitly add the devkitpro tool folder to the executing shell path
+          export PATH="/opt/devkitpro/tools/bin:$PATH"
 
-          # Locate the compiled ELF dynamically
+          # 1. Generate the SMDH metadata using devkitPro's native tool
+          smdhtool icon.png target/github_viewer.smdh --title "3DS GitHub Viewer" "Inspect GitHub repos natively" "MeiMei"
+
+          # 2. Locate the compiled ELF dynamically
           ELF_PATH=$(find target/armv6k-nintendo-3ds/release/ -name "*.elf" | head -n 1)
           echo "Found compiled ELF at: $ELF_PATH"
 
-          # Convert ELF into the 3DSX executable
+          # 3. Convert ELF into the 3DSX executable
           3dsxtool "$ELF_PATH" github_viewer.3dsx --smdh=target/github_viewer.smdh
 
-          # Compile the installable CIA file
+          # 4. Compile the installable CIA file
           makerom -f cia -o github_viewer.cia -elf "$ELF_PATH" -smdh target/github_viewer.smdh -major 1 -minor 0 -micro 0 -titleid 000400000FFFFF00
 
       - name: Create GitHub Release and Upload Binaries
