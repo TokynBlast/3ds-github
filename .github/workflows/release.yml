@@ -34,12 +34,11 @@ jobs:
       - name: Extract Tag or Manual Version Name
         id: get_version
         run: |
-          if [[ "${GITHUB_REF}" == refs/tags/* ]]; then
-            TAG_NAME=${GITHUB_REF#refs/tags/}
+          if [ "${{ github.ref_type }}" = "tag" ]; then
+            echo "VERSION=${{ github.ref_name }}" >> $GITHUB_OUTPUT
           else
-            TAG_NAME="unstable_manual_build"
+            echo "VERSION=unstable_manual_build" >> $GITHUB_OUTPUT
           fi
-          echo "VERSION=$TAG_NAME" >> $GITHUB_OUTPUT
 
       - name: Setup devkitARM Environment Paths
         run: |
