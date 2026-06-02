@@ -5,6 +5,7 @@ fn main() {
     let gfx = Gfx::new().unwrap();
     let mut top_screen = gfx.top_screen.borrow_mut();
     let mut bottom_screen = gfx.bottom_screen.borrow_mut();
+    let gh_icon = include_bytes!("assets/icon.raw");
 
     while apt.main_loop() {
         let top_buff = top_screen.raw_framebuffer();
