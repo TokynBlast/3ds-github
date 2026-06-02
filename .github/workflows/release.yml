@@ -19,17 +19,15 @@ jobs:
       - name: Checkout Code Repository
         uses: actions/checkout@v4
 
-      - name: Install System Dependencies (Clang, Headers, 3DS Tools)
+      - name: Install System Dependencies
         run: |
           apt-get update
-          apt-get install -y clang libclang-dev llvm wget unzip
+          apt-get install -y clang libclang-dev llvm wget unzip python3-pip
 
+          git clone https://github.com/ihaveamac/3DS-rom-tools.git /opt/3ds-rom-tools
 
-          wget https://pkg.devkitpro.org/packages/linux/x86_64/makerom-v0.18.3-linux_x86_64.zip || wget https://github.com/3DSGuy/Project_CTR/releases/download/makerom-v0.18.3/makerom-v0.18.3-ubuntu_x86_64.zip
-          unzip *.zip
-          mv makerom /usr/local/bin/makerom
-          chmod +x /usr/local/bin/makerom
-          rm -rf *.zip
+          chmod +x /opt/3ds-rom-tools/*.py
+          ln -s /opt/3ds-rom-tools/makerom.py /usr/local/bin/makerom
 
       - name: Extract Tag or Manual Version Name
         id: get_version
@@ -61,7 +59,7 @@ jobs:
           mkdir -p target
           export PATH="/opt/devkitpro/tools/bin:$PATH"
 
-          # 1. Generate the SMDH metadata natively
+          # 1. Generate the SMDH metadata natively using devkitPro's tool
           smdhtool --create "3DS GitHub" "Inspect GitHub repos natively" "MeiMei" icon.png target/github_viewer.smdh
 
           # 2. Locate the compiled ELF dynamically
@@ -71,26 +69,9 @@ jobs:
           # 3. Convert ELF into the standard 3DSX executable
           3dsxtool "$ELF_PATH" github_viewer.3dsx --smdh=target/github_viewer.smdh
 
-          # 4. Generate a valid micro-RSF specification file on the fly so makerom accepts the raw ELF
-          cat <<EOF > target/app.rsf
-          SystemControlInfo:
-            SaveDataSize: 0KB
-            Title: "3DS GitHub"
-            CoreVersion: 2
-            StackSize: 0x40000
-          BasicInfo:
-            Title: "3DS GitHub"
-            ProgramIndex: 0
-          EOF
-
-          # 5. Compile the installable CIA file directly from the ELF using our RSF config!
-          makerom -f cia \
-            -o github_viewer.cia \
-            -target t \
-            -elf "$ELF_PATH" \
-            -rsf target/app.rsf \
-            -icon target/github_viewer.smdh \
-            -major 1 -minor 0 -micro 0
+          # 4. Use the Python tools to generate the CIA container flawlessly
+          # This handles all internal system configurations behind the scenes!
+          python3 /opt/3ds-rom-tools/makecia.py github_viewer.3dsx github_viewer.cia --smdh target/github_viewer.smdh --title "3DS GitHub" --publisher "MeiMei"
 
       - name: Create GitHub Release and Upload Binaries
         uses: softprops/action-gh-release@v3
