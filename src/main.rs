@@ -7,7 +7,7 @@ fn main() {
     let gfx = Gfx::new().unwrap();
 
     // Create a `Console` that takes control of the upper LCD screen.
-    let top_console = Console::new(gfx.top_screen.borrow_mut());
+    let _ = Console::new(gfx.top_screen.borrow_mut());
 
     println!("This is a test, development for 3DS Git will begin!!");
 }
