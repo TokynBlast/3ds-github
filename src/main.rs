@@ -10,4 +10,6 @@ fn main() {
     let _ = Console::new(gfx.top_screen.borrow_mut());
 
     println!("This is a test, development for 3DS Git will begin!!");
+
+    loop {}
 }
