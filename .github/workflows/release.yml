@@ -74,7 +74,7 @@ jobs:
           3dsxtool "$ELF_PATH" github_viewer.3dsx --smdh=target/github_viewer.smdh
 
           # 4. Compile the installable CIA file
-          makerom -f cia -o github_viewer.cia -elf "$ELF_PATH" -smdh target/github_viewer.smdh -major 1 -minor 0 -micro 0 -titleid 000400000FFFFF00
+          makerom -f cia -o github_viewer.cia -elf "$ELF_PATH" -icon target/github_viewer.smdh -major 1 -minor 0 -micro 0 -titleid 000400000FFFFF00
 
       - name: Create GitHub Release and Upload Binaries
         uses: softprops/action-gh-release@v3
