@@ -55,6 +55,12 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "c4512299f36f043ab09a583e57bceb5a5aab7a73db1805848e8fef3c9e8c78b3"
 
 [[package]]
+name = "bytemuck"
+version = "1.25.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "c8efb64bd706a16a1bdde310ae86b351e4d21550d98d056f22f8a7f7a2183fec"
+
+[[package]]
 name = "cc"
 version = "1.2.63"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -78,6 +84,44 @@ name = "cfg-if"
 version = "1.0.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "9330f8b2ff13f34540b44e946ef35111825727b38d33286ef986142615121801"
+
+[[package]]
+name = "citro3d"
+version = "0.1.0"
+source = "git+https://github.com/rust3ds/citro3d-rs.git#b77bd0ac0fde191a117d1378e9572b6251ad54e6"
+dependencies = [
+ "bitflags",
+ "bytemuck",
+ "citro3d-macros",
+ "citro3d-sys",
+ "ctru-rs",
+ "ctru-sys",
+ "document-features",
+ "glam",
+ "libc",
+ "pin_array",
+]
+
+[[package]]
+name = "citro3d-macros"
+version = "0.1.0"
+source = "git+https://github.com/rust3ds/citro3d-rs.git#b77bd0ac0fde191a117d1378e9572b6251ad54e6"
+dependencies = [
+ "litrs 0.5.1",
+ "quote",
+]
+
+[[package]]
+name = "citro3d-sys"
+version = "0.1.0"
+source = "git+https://github.com/rust3ds/citro3d-rs.git#b77bd0ac0fde191a117d1378e9572b6251ad54e6"
+dependencies = [
+ "bindgen",
+ "cc",
+ "ctru-sys",
+ "doxygen-rs",
+ "libc",
+]
 
 [[package]]
 name = "clang-sys"
@@ -119,6 +163,15 @@ dependencies = [
 ]
 
 [[package]]
+name = "document-features"
+version = "0.2.12"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "d4b8a88685455ed29a21542a33abd9cb6510b6b129abadabdcef0f4c55bc8f61"
+dependencies = [
+ "litrs 1.0.0",
+]
+
+[[package]]
 name = "doxygen-rs"
 version = "0.4.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -149,8 +202,15 @@ checksum = "5baebc0774151f905a1a2cc41989300b1e6fbb29aff0ceffa1064fdd3088d582"
 name = "github_viewer"
 version = "0.0.1"
 dependencies = [
+ "citro3d",
  "ctru-rs",
 ]
+
+[[package]]
+name = "glam"
+version = "0.30.10"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "19fc433e8437a212d1b6f1e68c7824af3aed907da60afa994e7f542d18d12aa9"
 
 [[package]]
 name = "glob"
@@ -207,6 +267,18 @@ dependencies = [
  "cfg-if",
  "windows-link",
 ]
+
+[[package]]
+name = "litrs"
+version = "0.5.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "1e4cf394bcd88ba72eb3b2862e21ef6458b0e1586654e213b0176e667bb9d19e"
+
+[[package]]
+name = "litrs"
+version = "1.0.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "11d3d7f243d5c5a8b9bb5d6dd2b1602c0cb0b9db1621bafc7ed66e35ff9fe092"
 
 [[package]]
 name = "log"
@@ -283,6 +355,12 @@ checksum = "67eabc2ef2a60eb7faa00097bd1ffdb5bd28e62bf39990626a582201b7a754e5"
 dependencies = [
  "siphasher",
 ]
+
+[[package]]
+name = "pin_array"
+version = "0.1.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "4d15269608f31190a1a44e7dbc8d6d95159676848a20109bb5f08213728eafc6"
 
 [[package]]
 name = "prettyplease"
