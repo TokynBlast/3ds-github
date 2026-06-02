@@ -4,7 +4,7 @@ fn main() {
     let apt = Apt::new().unwrap();
     let gfx = Gfx::new().unwrap();
     let mut top_screen = gfx.top_screen.borrow_mut();
-    let image_bytes = include_bytes!("../miku.raw");
+    let mut bottom_screen = gfx.bottom_screen.borrow_mut();
 
     while apt.main_loop() {
         let buffer = top_screen.raw_framebuffer();
