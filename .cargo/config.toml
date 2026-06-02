@@ -3,3 +3,6 @@ target = "armv6k-nintendo-3ds"
 
 [unstable]
 build-std = ["std", "core", "alloc", "panic_abort"]
+
+[target.armv6k-nintendo-3ds]
+runner = "flatpak run --nosocket=wayland --socket=x11 org.citra_emu.citra"
