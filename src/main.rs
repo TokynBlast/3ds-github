@@ -28,11 +28,12 @@ fn main() {
                 *bottom_buff.ptr.add(j + 2) = 0x0F; // Red
                 j += 3;
             }
-        }
+
+            // GitHub logo (top screen)
             std::ptr::copy_nonoverlapping(
-              image_bytes.as_ptr(),
-                buffer.ptr,
-                image_bytes.len(),
+                gh_icon.as_ptr(),
+                top_buff.ptr,
+                gh_icon.len(),
             );
         }
 
