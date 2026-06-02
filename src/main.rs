@@ -12,8 +12,8 @@ fn main() {
         let bottom_buff = bottom_screen.raw_framebuffer();
 
         // Calculate exact byte capacities
-        let top_bytes = (top_buff.width * bottom_buff.height * 3) as usize;       // 288,000 bytes
-        let bottom_bytes = (bottom_buff.width * bottom_buff.height * 3) as usize; // 230,400 bytes
+        let top_bytes = (top_buff.width * top_buff.height * 3) as usize;
+        let bottom_bytes = (bottom_buff.width * bottom_buff.height * 3) as usize;
 
         // 3DS works with BGR, not RGB (this is stupid ;-;)
         unsafe {
