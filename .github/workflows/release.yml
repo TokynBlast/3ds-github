@@ -22,7 +22,7 @@ jobs:
       - name: Install System Dependencies (Clang, Headers, 3DS Tools)
         run: |
           apt-get update
-          apt-get install -y clang libclang-dev llvm wget unzip
+          apt-get install -y clang libclang-dev llvm wget unzip 3dstools
 
 
           wget https://pkg.devkitpro.org/packages/linux/x86_64/makerom-v0.18.3-linux_x86_64.zip || wget https://github.com/3DSGuy/Project_CTR/releases/download/makerom-v0.18.3/makerom-v0.18.3-ubuntu_x86_64.zip
