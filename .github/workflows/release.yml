@@ -71,10 +71,10 @@ jobs:
           # 3. Convert ELF into the standard 3DSX executable
           3dsxtool "$ELF_PATH" github_viewer.3dsx --smdh=target/github_viewer.smdh
 
-          # 4. Extract the properly formatted 3DS code binary from the 3DSX file
-          stripex github_viewer.3dsx target/code.bin
+          # 4. Use 3dstool to extract the perfectly formatted code binary from the 3DSX
+          3dstool -unzip --3dsx github_viewer.3dsx --code target/code.bin
 
-          # 5. Compile the installable CIA file using the stripped code binary
+          # 5. Compile the installable CIA file using the extracted code binary
           makerom -f cia \
             -o github_viewer.cia \
             -target t \
