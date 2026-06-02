@@ -63,8 +63,8 @@ jobs:
           # Explicitly add the devkitpro tool folder to the executing shell path
           export PATH="/opt/devkitpro/tools/bin:$PATH"
 
-          # 1. Generate the SMDH metadata using devkitPro's native tool
-          smdhtool icon.png target/github_viewer.smdh --title "3DS GitHub Viewer" "Inspect GitHub repos natively" "MeiMei"
+          # 1. Generate the SMDH metadata
+          smdhtool --create "3DS GitHub" "Inspect GitHub repos natively" "MeiMei" icon.png target/github_viewer.smdh
 
           # 2. Locate the compiled ELF dynamically
           ELF_PATH=$(find target/armv6k-nintendo-3ds/release/ -name "*.elf" | head -n 1)
