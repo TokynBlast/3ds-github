@@ -22,14 +22,17 @@ jobs:
       - name: Install System Dependencies (Clang, Headers, 3DS Tools)
         run: |
           apt-get update
-          apt-get install -y clang libclang-dev llvm wget unzip
+          apt-get install -y clang libclang-dev llvm wget unzip build-essential
 
-          wget https://github.com/3DSGuy/Project_CTR/releases/download/makerom-v0.19.0/makerom-v0.19.0-ubuntu_x86_64.zip
-          unzip makerom-v0.19.0-ubuntu_x86_64.zip
+          git clone https://github.com/3DSGuy/Project_CTR.git
+
+          cd Project_CTR/makerom
+          make
+
           mv makerom /usr/local/bin/makerom
           chmod +x /usr/local/bin/makerom
-
-          rm -rf makerom-v0.19.0-ubuntu_x86_64.zip
+          cd ../..
+          rm -rf Project_CTR
 
       - name: Extract Tag or Manual Version Name
         id: get_version
