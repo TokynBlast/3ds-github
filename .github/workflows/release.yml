@@ -71,14 +71,24 @@ jobs:
           # 3. Convert ELF into the standard 3DSX executable
           3dsxtool "$ELF_PATH" github_viewer.3dsx --smdh=target/github_viewer.smdh
 
-          # 4. Use 3dstool to extract the perfectly formatted code binary from the 3DSX
-          3dstool -unzip --3dsx github_viewer.3dsx --code target/code.bin
+          # 4. Generate a valid micro-RSF specification file on the fly so makerom accepts the raw ELF
+          cat <<EOF > target/app.rsf
+          SystemControlInfo:
+            SaveDataSize: 0KB
+            Title: "3DS GitHub"
+            CoreVersion: 2
+            StackSize: 0x40000
+          BasicInfo:
+            Title: "3DS GitHub"
+            ProgramIndex: 0
+          EOF
 
-          # 5. Compile the installable CIA file using the extracted code binary
+          # 5. Compile the installable CIA file directly from the ELF using our RSF config!
           makerom -f cia \
             -o github_viewer.cia \
             -target t \
-            -code target/code.bin \
+            -elf "$ELF_PATH" \
+            -rsf target/app.rsf \
             -icon target/github_viewer.smdh \
             -major 1 -minor 0 -micro 0
 
