@@ -9,6 +9,8 @@
 
 #define GRAY C2D_Color32(0x70, 0x70, 0x70, 0x7F)
 #define WHITE C2D_Color32(0xFF, 0xFF, 0xFF, 0xFF)
+#define newBuff(name, size) \
+        C2D_TextBuf name = C2D_TextBufNew(size);
 
 bool hasInternet()
 {
@@ -34,8 +36,8 @@ int main() {
     C3D_RenderTarget* top = C2D_CreateScreenTarget(GFX_TOP, GFX_LEFT);
     C3D_RenderTarget* bot = C2D_CreateScreenTarget(GFX_BOTTOM, GFX_LEFT);
 
-    C2D_TextBuf generalTexBuff = C2D_TextBufNew(2048);
-    C2D_TextBuf online_or_login_msg = C2D_TextBufNew(70);
+    newBuff(generalTexBuff, 2048);
+    newBuff(online_or_login_msg, 70);
 
     newText(title, generalTexBuff, "3DS GitHub");
     newText(online, online_or_login_msg, "");
