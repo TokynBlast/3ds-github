@@ -54,12 +54,10 @@ int main() {
         hidScanInput();
         u32 keys = hidKeysDown();
 
-        if (keys & KEY_B) {
-            settings.sbar_category = Settings::SideBarCat::Search;
-        } else if (keys & KEY_A) {
-            settings.sbar_category = Settings::SideBarCat::Settings;
-        } else if (keys & KEY_CPAD_DOWN) {
-            settings.sbar_category = Settings::SideBarCat::MyAccount;
+        if (keys & KEY_L) {
+            settings.cycleCatsLeft();
+        } else if (keys & KEY_R) {
+            settings.CycleCatsRight();
         }
 
         C3D_FrameBegin(C3D_FRAME_SYNCDRAW);
@@ -90,7 +88,10 @@ int main() {
                 C2D_DrawCircle(0.0f, 0.0f, 0.0f, 5.0f, BLACK, WHITE, LIGHT_GRAY, GRAY);
                 break;
             case Settings::SideBarCat::Search:
-                C2D_DrawRectSolid(80.0f, 20.0f, 0.0f, 50.0f, 10.0f, DARK_BLUE);
+                break;
+            case Settings::SideBarCat::Count:
+                // Incase we somehow get here...
+                settings.sbar_category = Settings::SideBarCat::Search;
                 break;
         }
 
