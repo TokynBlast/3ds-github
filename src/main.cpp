@@ -68,6 +68,7 @@ int main() {
         C2D_TextOptimize(&online);
         C2D_DrawText(&online, C2D_WithColor, 10.0f, 55.0f, 0.5f, 0.7f, 0.7f, WHITE);
 
+
         // Fill in bottom screen, then start drawing everything that belongs there
         C2D_TargetClear(bot, C2D_Color32(0x0F, 0x61, 0xA5, 0xFF));
         C2D_SceneBegin(bot);
