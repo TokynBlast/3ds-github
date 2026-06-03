@@ -48,7 +48,7 @@ $(BUILD)/%.o: $(SOURCES)/%.cpp | $(BUILD)
 $(BUILD):
 	mkdir -p $@
 
-echo "I suggest using azahar to emulate the 3DS if you can't use a real one!"
+  echo "I suggest using azahar to emulate the 3DS if you can't use a real one!"
 
 clean:
 	rm -rf $(BUILD)
