@@ -18,8 +18,10 @@
 
 bool hasInternet()
 {
+    acInit();
     u32 status = 0;
     ACU_GetWifiStatus(&status);
+    acExit();
     return status > 0;
 }
 
