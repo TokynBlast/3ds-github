@@ -16,22 +16,17 @@ jobs:
     container: devkitpro/devkitarm:latest
 
     steps:
-      - name: Checkout Code Repository
+      - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Install System Dependencies
+      - name: Install deps
         run: |
           apt-get update
-          apt-get install -y clang libclang-dev llvm wget unzip
+          apt-get install -y wget unzip
+          wget https://github.com/3DSGuy/Project_CTR/releases/download/makerom-v0.18.3/makerom-v0.18.3-ubuntu_x86_64.zip
+          unzip *.zip && mv makerom /usr/local/bin/makerom && chmod +x /usr/local/bin/makerom
 
-          # Grab devkitPro's own working precompiled version of makerom
-          wget https://pkg.devkitpro.org/packages/linux/x86_64/makerom-v0.18.3-linux_x86_64.zip || wget https://github.com/3DSGuy/Project_CTR/releases/download/makerom-v0.18.3/makerom-v0.18.3-ubuntu_x86_64.zip
-          unzip *.zip
-          mv makerom /usr/local/bin/makerom
-          chmod +x /usr/local/bin/makerom
-          rm -rf *.zip
-
-      - name: Extract Tag or Manual Version Name
+      - name: Get Version
         id: get_version
         run: |
           if [ "${{ github.ref_type }}" = "tag" ]; then
@@ -40,188 +35,37 @@ jobs:
             echo "VERSION=unstable_build" >> $GITHUB_OUTPUT
           fi
 
-      - name: Setup devkitARM Environment Paths
+      - name: Setup devkitARM
         run: |
           echo "DEVKITPRO=/opt/devkitpro" >> $GITHUB_ENV
           echo "DEVKITARM=/opt/devkitpro/devkitARM" >> $GITHUB_ENV
           echo "/opt/devkitpro/devkitARM/bin" >> $GITHUB_PATH
+          echo "/opt/devkitpro/tools/bin" >> $GITHUB_PATH
 
-      - name: Install Rust Toolchain
-        uses: dtolnay/rust-toolchain@nightly
-        with:
-          components: rust-src
+      - name: Build
+        run: make
 
-      - name: Compile Rust ELF Binary
-        run: |
-          cargo build --release --target armv6k-nintendo-3ds -Z build-std=core,alloc,std,panic_abort
-
-      - name: Build 3DSX and CIA Bundles
-        run: |
-          mkdir -p target
-          export PATH="/opt/devkitpro/tools/bin:$PATH"
-
-          # 1. Generate the SMDH metadata natively using devkitPro's tool
-          smdhtool --create "3DS GitHub" "Inspect GitHub repos natively" "MeiMei" icon.png target/github_viewer.smdh
-
-          # 2. Locate the compiled ELF dynamically
-          ELF_PATH=$(find target/armv6k-nintendo-3ds/release/ -name "*.elf" | head -n 1)
-          echo "Found compiled ELF at: $ELF_PATH"
-
-          # 3. Convert ELF into the standard 3DSX executable
-          3dsxtool "$ELF_PATH" github_viewer.3dsx --smdh=target/github_viewer.smdh
-
-          # 4. Generate the Official ihaveamac Dummy RSF configuration file on the fly!
-          cat <<EOF > target/app.rsf
-          BasicInfo:
-            Title                   : "3DS GitHub"
-            CompanyCode             : "00"
-            ProductCode             : "CTR-P-GGIT"
-            ContentType             : Application
-            Logo                    : Nintendo
-
-          TitleInfo:
-            UniqueId                : 0x0FFF00
-            Category                : Application
-
-          Option:
-            UseOnSD                 : true
-            EnableCompress          : true
-            FreeProductCode         : true
-            EnableCrypt             : false
-            MediaFootPadding        : false
-
-          AccessControlInfo:
-            SystemSaveDataId1: 0x00000000
-            SystemSaveDataId2: 0x00000000
-            OtherUserSaveDataId1: 0x00000
-            OtherUserSaveDataId2: 0x00000
-            OtherUserSaveDataId3: 0x00000
-
-            IdealProcessor          : 0
-            AffinityMask            : 1
-            Priority                : 16
-            MaxCpu                  : 0x9E
-            DisableDebug            : false
-            EnableForceDebug        : false
-            CanWriteSharedPage      : false
-            CanUsePrivilegedPriority: false
-            CanUseNonAlphabetAndNumber: false
-            PermitMainFunctionArgument: false
-            CanShareDeviceMemory    : false
-            RunnableOnSleep         : false
-            SpecialMemoryArrange    : false
-            UseOtherVariationSaveData: false
-
-            CoreVersion             : 2
-            DescVersion             : 2
-            MemoryType              : Application
-            HandleTableSize: 512
-            IORegisterMapping:
-              - 1ff50000-1ff57fff
-              - 1ff70000-1ff77fff
-            MemoryMapping:
-              - 1f000000-1f5fffff:r
-            SystemCallAccess:
-              ControlMemory: 1
-              QueryMemory: 2
-              ExitProcess: 3
-              GetProcessAffinityMask: 4
-              SetProcessAffinityMask: 5
-              SetProcessIdealProcessor: 6
-              GetProcessIdealProcessor: 7
-              CreateThread: 8
-              ExitThread: 9
-              SleepThread: 10
-              GetThreadPriority: 11
-              SetThreadPriority: 12
-              GetThreadAffinityMask: 13
-              SetThreadAffinityMask: 14
-              GetThreadIdealProcessor: 15
-              SetThreadIdealProcessor: 16
-              GetCurrentProcessorNumber: 17
-              Run: 18
-              CreateMutex: 19
-              ReleaseMutex: 20
-              CreateSemaphore: 21
-              ReleaseSemaphore: 22
-              CreateEvent: 23
-              SignalEvent: 24
-              ClearEvent: 25
-              CreateTimer: 26
-              SetTimer: 27
-              CancelTimer: 28
-              ClearTimer: 29
-              CreateMemoryBlock: 30
-              MapMemoryBlock: 31
-              UnmapMemoryBlock: 32
-              CreateAddressArbiter: 33
-              ArbitrateAddress: 34
-              CloseHandle: 35
-              WaitSynchronization1: 36
-              WaitSynchronizationN: 37
-              SignalAndWait: 38
-              DuplicateHandle: 39
-              GetSystemTick: 40
-              GetHandleInfo: 41
-              GetSystemInfo: 42
-              GetProcessInfo: 43
-              GetThreadInfo: 44
-              ConnectToPort: 45
-              SendSyncRequest1: 46
-              SendSyncRequest2: 47
-              SendSyncRequest3: 48
-              SendSyncRequest4: 49
-              SendSyncRequest: 50
-              OpenProcess: 51
-              OpenThread: 52
-              GetProcessId: 53
-              GetProcessIdOfThread: 54
-              GetThreadId: 55
-              GetResourceLimit: 56
-              GetResourceLimitLimitValues: 57
-              GetResourceLimitCurrentValues: 58
-              GetThreadContext: 59
-              Break: 60
-              OutputDebugString: 61
-
-          SystemControlInfo:
-            SaveDataSize: 0KB
-            RemasterVersion: 0000
-            StackSize: 0x40000
-          EOF
-
-          # 5. Compile the CIA asset container using the full dummy specifications
-          makerom -f cia \
-            -o github_viewer.cia \
-            -target t \
-            -elf "$ELF_PATH" \
-            -rsf target/app.rsf \
-            -icon target/github_viewer.smdh \
-            -major 1 -minor 0 -micro 0
-
-      - name: Create GitHub Release and Upload Binaries
+      - name: Release
         uses: softprops/action-gh-release@v3
         with:
           tag_name: ${{ steps.get_version.outputs.VERSION }}
           files: |
-            github_viewer.3dsx
-            github_viewer.cia
+            build/3ds_github.3dsx
+            build/3ds_github.cia
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Checkout UniStore Repository
+      - name: Checkout UniStore Repo
         uses: actions/checkout@v4
         with:
           repository: 'TokynBlast/unistore'
           token: ${{ secrets.CROSS_PUSH }}
           path: 'unistore-repo'
 
-      - name: Dynamically Update UniStore JSON
+      - name: Update UniStore
         shell: python
         run: |
           import json
-          import os
-
           tag_version = "${{ steps.get_version.outputs.VERSION }}"
           is_unstable = "unstable" in tag_version
           unistore_path = "unistore-repo/meimei-prog-tools.unistore"
@@ -235,27 +79,20 @@ jobs:
           for app in data["storeContent"]:
               if app["info"]["title"] == "3DS GitHub":
                   app["info"]["version"] = tag_version
-
-                  # Fixed to target your exact JSON arrays
-                  if is_unstable:
-                      if "unstable_cia" in app and len(app["unstable_cia"]) > 0:
-                          app["unstable_cia"][0]["file"] = f"https://github.com/TokynBlast/3ds-github/releases/download/{tag_version}/github_viewer.cia"
-                      if "unstable_3dsx" in app and len(app["unstable_3dsx"]) > 0:
-                          app["unstable_3dsx"][0]["file"] = f"https://github.com/TokynBlast/3ds-github/releases/download/{tag_version}/github_viewer.3dsx"
-                  else:
-                      if "stable_cia" in app and len(app["stable_cia"]) > 0:
-                          app["stable_cia"][0]["file"] = f"https://github.com/TokynBlast/3ds-github/releases/download/{tag_version}/github_viewer.cia"
-                      if "stable_3dsx" in app and len(app["stable_3dsx"]) > 0:
-                          app["stable_3dsx"][0]["file"] = f"https://github.com/TokynBlast/3ds-github/releases/download/{tag_version}/github_viewer.3dsx"
+                  prefix = "unstable" if is_unstable else "stable"
+                  base_url = f"https://github.com/TokynBlast/3ds-github/releases/download/{tag_version}"
+                  for ext in ["cia", "3dsx"]:
+                      key = f"{prefix}_{ext}"
+                      if key in app and len(app[key]) > 0:
+                          app[key][0]["file"] = f"{base_url}/3ds_github.{ext}"
 
           with open(unistore_path, "w") as f:
               json.dump(data, f, indent=2)
 
-      - name: Push Updated UniStore to External Repo
+      - name: Push UniStore
         run: |
           cd unistore-repo
           git config --global user.name "github-actions[bot]"
           git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
-
           git add meimei-prog-tools.unistore
-          git diff-index --quiet HEAD || (git commit -m "chore: auto-update unistore to ${{ steps.get_version.outputs.VERSION }}" && git push origin main)
+          git diff-index --quiet HEAD || (git commit -m "chore: update unistore to ${{ steps.get_version.outputs.VERSION }}" && git push origin main)
