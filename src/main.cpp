@@ -46,7 +46,7 @@ int main() {
     newBuff(online_or_login_msg, 70);
 
     newText(title, generalTexBuff, "3DS GitHub");
-    newText(online, online_or_login_msg, "");
+    newText(online, online_or_login_msg, "You're currently offline.\nPlease connect to the internet\nto access GitHub.");
 
     // Run till the user exits :)
     while (aptMainLoop())
@@ -75,12 +75,8 @@ int main() {
         C2D_TextBufClear(online_or_login_msg);
 
         if (!hasInternet()) {
-            C2D_TextParse(&online, online_or_login_msg, "You're currently offline.\nPlease connect to the internet\nto access GitHub.");
+            C2D_DrawText(&online, C2D_WithColor, 10.0f, 55.0f, 0.5f, 0.7f, 0.7f, WHITE);
         }
-
-        C2D_TextOptimize(&online);
-        C2D_DrawText(&online, C2D_WithColor, 10.0f, 55.0f, 0.5f, 0.7f, 0.7f, WHITE);
-
 
         // Fill in bottom screen, then start drawing everything that belongs there
         C2D_TargetClear(bot, C2D_Color32(0x0F, 0x61, 0xA5, 0xFF));
