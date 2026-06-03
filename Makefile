@@ -29,6 +29,7 @@ APP_AUTHOR  := MeiMei
 ICON        := icon.png
 
 all: $(BUILD)/$(TARGET).3dsx $(BUILD)/$(TARGET).cia
+	@echo "I suggest using azahar to emulate the 3DS if you can't use a real one!"
 
 $(BUILD)/$(TARGET).elf: $(OFILES)
 	$(CXX) $(LDFLAGS) $^ $(LIBPATHS) $(LIBS) -o $@
@@ -47,8 +48,6 @@ $(BUILD)/%.o: $(SOURCES)/%.cpp | $(BUILD)
 
 $(BUILD):
 	mkdir -p $@
-
-  echo "I suggest using azahar to emulate the 3DS if you can't use a real one!"
 
 clean:
 	rm -rf $(BUILD)
