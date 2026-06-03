@@ -44,10 +44,9 @@ int main() {
     C3D_RenderTarget* bot = C2D_CreateScreenTarget(GFX_BOTTOM, GFX_LEFT);
 
     newBuff(generalTexBuff, 2048);
-    newBuff(online_or_login_msg, 70);
 
     newText(title, generalTexBuff, "3DS GitHub");
-    newText(online, online_or_login_msg, "You're currently offline.\nPlease connect to the internet\nto access GitHub.");
+    newText(online, generalTexBuff, "You're currently offline.\nPlease connect to the internet\nto access GitHub.");
 
     // Run till the user exits :)
     while (aptMainLoop())
