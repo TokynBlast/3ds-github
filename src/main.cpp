@@ -12,6 +12,7 @@
 #define BLACK C2D_Color32(0x00, 0x00, 0x00, 0xFF)
 #define DARK_GRAY C2D_Color32(0x40, 0x40, 0x40, 0xFF)
 #define LIGHT_GRAY C2D_Color32(0x90, 0X90, 0X90, 0XFF)
+#define DARK_BLUE C2D_Color32(0X20, 0X20, 0XFF, 0XFF)
 
 #define newBuff(name, size) \
         C2D_TextBuf name = C2D_TextBufNew(size);
