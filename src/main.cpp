@@ -103,5 +103,3 @@ int main() {
     gfxExit();
     return 0;
 }
-
-#undef newText
