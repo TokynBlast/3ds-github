@@ -1,5 +1,6 @@
 #include <3ds.h>
 #include <citro2d.h>
+#include "settings.hpp"
 
 #define newText(name, buff, text) \
         C2D_Text name; \
@@ -17,7 +18,7 @@ bool hasInternet()
 }
 
 int main() {
-    bool signed_in = false;
+    Settings settings;
 
     gfxInitDefault();
 
