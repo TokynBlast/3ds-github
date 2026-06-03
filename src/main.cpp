@@ -68,7 +68,15 @@ int main() {
         C2D_TargetClear(bot, C2D_Color32(0x0F, 0x61, 0xA5, 0xFF));
         C2D_SceneBegin(bot);
 
-        C2D_DrawRectSolid(0.0f, 0.0f, 0.0f, 50.0f, GSP_SCREEN_HEIGHT_BOTTOM, GRAY);
+        C2D_DrawRectSolid(0.0f, 0.0f, 0.0f, 50.0f, GSP_SCREEN_HEIGHT_BOTTOM, DARK_GRAY);
+
+        switch (settings.sbar_category) {
+            case Settings::SideBarCat::Settings:
+                C2D_DrawRectSolid(50.0f, 0.0f, 00.0f, GSP_SCREEN_WIDTH + 40, GSP_SCREEN_HEIGHT_BOTTOM, BLACK);
+                break;
+            default:
+                break;
+        }
 
         // Tell the 3DS the frame is ready
         C3D_FrameEnd(0);
