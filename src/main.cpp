@@ -88,14 +88,6 @@ int main() {
 
         C2D_DrawRectSolid(0.0f, 0.0f, 0.0f, 50.0f, GSP_SCREEN_HEIGHT_BOTTOM, DARK_GRAY);
 
-        u32 keys = hidKeysDown();
-
-        if (keys & KEY_A) {
-            settings.sbar_category = Settings::SideBarCat::Search;
-        } else if (keys & KEY_B) {
-            settings.sbar_category = Settings::SideBarCat::Search;
-        }
-
         switch (settings.sbar_category) {
             case Settings::SideBarCat::Settings:
                 C2D_DrawRectSolid(50.0f, 0.0f, 00.0f, GSP_SCREEN_WIDTH + 40, GSP_SCREEN_HEIGHT_BOTTOM, BLACK);
