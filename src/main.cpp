@@ -51,6 +51,17 @@ int main() {
     // Run till the user exits :)
     while (aptMainLoop())
     {
+        hidScanInput();
+        u32 keys = hidKeysDown();
+
+        if (keys & KEY_B) {
+            settings.sbar_category = Settings::SideBarCat::Search;
+        } else if (keys & KEY_A) {
+            settings.sbar_category = Settings::SideBarCat::Settings;
+        } else if (keys & KEY_CPAD_DOWN) {
+            settings.sbar_category = Settings::SideBarCat::MyAccount;
+        }
+
         C3D_FrameBegin(C3D_FRAME_SYNCDRAW);
 
         // Clear top screen
