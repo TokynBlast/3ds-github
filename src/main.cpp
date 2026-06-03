@@ -72,8 +72,6 @@ int main() {
 
         C2D_DrawText(&title, C2D_WithColor, 10.0f, 10.0f, 0.4f, 2.0f, 2.0f, WHITE);
 
-        C2D_TextBufClear(online_or_login_msg);
-
         if (!hasInternet()) {
             C2D_DrawText(&online, C2D_WithColor, 10.0f, 55.0f, 0.5f, 0.7f, 0.7f, WHITE);
         }
