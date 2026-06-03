@@ -100,7 +100,10 @@ int main() {
             case Settings::SideBarCat::Settings:
                 C2D_DrawRectSolid(50.0f, 0.0f, 00.0f, GSP_SCREEN_WIDTH + 40, GSP_SCREEN_HEIGHT_BOTTOM, BLACK);
                 break;
-            default:
+            case Settings::SideBarCat::MyAccount:
+                C2D_DrawCircle(0.0f, 0.0f, 0.0f, 5.0f, BLACK, WHITE, LIGHT_GRAY, GRAY);
+                break;
+            case Settings::SideBarCat::Search:
                 break;
         }
 
