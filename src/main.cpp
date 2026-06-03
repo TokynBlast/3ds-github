@@ -59,13 +59,6 @@ int main() {
 
         if (!hasInternet()) {
             C2D_TextParse(&online, online_or_login_msg, "You're currently offline.\nPlease connect to the internet\nto access GitHub.");
-        } else {
-            if (signed_in)
-            {
-                C2D_TextParse(&online, online_or_login_msg, "");
-            } else {
-                C2D_TextParse(&online, online_or_login_msg, "Please sign into GitHub.");
-            }
         }
 
         C2D_TextOptimize(&online);
