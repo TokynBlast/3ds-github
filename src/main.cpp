@@ -90,6 +90,7 @@ int main() {
                 C2D_DrawCircle(0.0f, 0.0f, 0.0f, 5.0f, BLACK, WHITE, LIGHT_GRAY, GRAY);
                 break;
             case Settings::SideBarCat::Search:
+                C2D_DrawRectSolid(80.0f, 20.0f, 0.0f, 50.0f, 10.0f, DARK_BLUE);
                 break;
         }
 
