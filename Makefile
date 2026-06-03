@@ -8,15 +8,15 @@ CC          := /opt/devkitpro/devkitARM/bin/arm-none-eabi-gcc
 
 ARCH        := -march=armv6k -mtune=mpcore -mfloat-abi=hard -mtp=soft
 CXXFLAGS    := -g -Wall -O2 -mword-relocations -ffunction-sections \
-               -fno-rtti -fno-exceptions -std=gnu++23 \
-               $(ARCH) -D__3DS__
+							 -fno-rtti -fno-exceptions -std=gnu++23 \
+							 $(ARCH) -D__3DS__
 LDFLAGS     := -specs=$(DEVKITARM)/arm-none-eabi/lib/3dsx.specs -g $(ARCH)
 
 LIBS        := -lcitro2d -lcitro3d -lctru -lm -lcurl -ljson-c
 LIBDIRS     := $(DEVKITPRO)/libctru $(DEVKITPRO)/portlibs/3ds
 
 INCLUDE     := $(foreach dir,$(INCLUDES),-I$(CURDIR)/$(dir)) \
-               $(foreach dir,$(LIBDIRS),-I$(dir)/include)
+							 $(foreach dir,$(LIBDIRS),-I$(dir)/include)
 LIBPATHS    := $(foreach dir,$(LIBDIRS),-L$(dir)/lib)
 
 CXXFILES    := $(wildcard $(SOURCES)/*.cpp)
