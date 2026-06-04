@@ -24,8 +24,7 @@ class Settings {
       };
 
       struct InternalSettings {
-          std::string username = "";
-          std::string password = "";
+          std::string user_id = "", password = "";
           bool signed_in = false;
       };
 
