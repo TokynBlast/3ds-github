@@ -23,6 +23,7 @@ class Settings {
           float font_size = 0.7f;
       };
 
+      // Settings that should be hidden, or the user should have no reason to modify directly
       struct InternalSettings {
           std::string user_id = "", password = "";
           bool signed_in = false;
