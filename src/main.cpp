@@ -35,8 +35,6 @@ bool hasInternet()
 }
 
 int main() {
-    Settings settings;
-
     gfxInitDefault();
 
     // Safer initalization; If it doesn't work, exit
