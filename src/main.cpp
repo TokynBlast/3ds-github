@@ -191,6 +191,7 @@ int main() {
     C2D_TextBufDelete(generalTexBuff);
     C2D_Fini();
     C3D_Fini();
+    httpcExit();
     acExit();
     gfxExit();
     return 0;
