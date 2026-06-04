@@ -40,7 +40,7 @@ $(SMDH): $(ICON) | $(BUILD)
 $(BUILD)/$(TARGET).3dsx: $(BUILD)/$(TARGET).elf $(SMDH)
 	3dsxtool $< $@ --smdh=$(SMDH)
 
-$(BUILD)/$(TARGET).cia: $(BUILD)/$(TARGET).elf $(SMDH) | $(BUILD)
+$(BUILD)/$(TARGET).cia: $(BUILD)/$(TARGET).elf $(SMDH)
 	makerom -f cia -o $@ -target t -elf $< -rsf gh.rsf -icon $(SMDH)
 
 $(BUILD)/%.o: $(SOURCES)/%.cpp | $(BUILD)
