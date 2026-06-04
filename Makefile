@@ -12,7 +12,7 @@ CXXFLAGS    := -g -Wall -O2 -mword-relocations -ffunction-sections \
 							 $(ARCH) -D__3DS__
 LDFLAGS     := -specs=$(DEVKITARM)/arm-none-eabi/lib/3dsx.specs -g $(ARCH)
 
-LIBS        := -lcitro2d -lcitro3d -lctru -lm -lcurl -ljson-c
+LIBS        := -lcitro2d -lcitro3d -lctru -lm
 LIBDIRS     := $(DEVKITPRO)/libctru $(DEVKITPRO)/portlibs/3ds
 
 INCLUDE     := $(foreach dir,$(INCLUDES),-I$(CURDIR)/$(dir)) \
