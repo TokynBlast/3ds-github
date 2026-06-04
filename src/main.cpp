@@ -19,10 +19,8 @@
 
 bool hasInternet()
 {
-    acInit();
     u32 status = 0;
     ACU_GetWifiStatus(&status);
-    acExit();
     return status > 0;
 }
 
@@ -37,6 +35,8 @@ int main() {
       gfxExit();
       return 1;
     }
+
+    acInit();
 
     C2D_Prepare();
 
@@ -102,6 +102,7 @@ int main() {
     C2D_TextBufDelete(generalTexBuff);
     C2D_Fini();
     C3D_Fini();
+    acExit();
     gfxExit();
     return 0;
 }
