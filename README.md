@@ -9,13 +9,13 @@
     <img src="https://img.shields.io/badge/platform-Nintendo%203DS-red?style=flat" alt="Requires Rust 1.86+">
   </a>
   <a href="https://github.com/tokynblast/3ds-github/issues">
-    <img src="https://img.shields.io/github/issues/tokynblasty/3ds-github?style=flat&label=open%20issues" alt="Number of open issues">
+    <img src="https://img.shields.io/github/issues/tokynblast/3ds-github?style=flat&label=open%20issues" alt="Number of open issues">
   </a>
-  <a href="https://github.com/tokynblasty/3ds-github/issues">
-    <img src="https://img.shields.io/github/issues-closed/tokynblasty/3ds-github?style=flat&label=closed%20issues" alt="Number of closed issues">
+  <a href="https://github.com/tokynblast/3ds-github/issues">
+    <img src="https://img.shields.io/github/issues-closed/tokynblast/3ds-github?style=flat&label=closed%20issues" alt="Number of closed issues">
   </a>
-  <a href="https://github.com/tokynblasty/3ds-github/commits">
-    <img src="https://img.shields.io/github/last-commit/tokynblasty/3ds-github" alt="When last commit was">
+  <a href="https://github.com/tokynblast/3ds-github/commits">
+    <img src="https://img.shields.io/github/last-commit/tokynblast/3ds-github" alt="When last commit was">
   </a>
   <a>
     <img src="https://img.shields.io/github/actions/workflow/status/tokynblast/3ds-github/check.yml" alt="Build check for 3DS GitHub">
