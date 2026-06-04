@@ -34,6 +34,22 @@ bool hasInternet()
     return status > 0;
 }
 
+
+// Checks whether the user clicked within an area
+bool touchedThere(u16 x, u16 y, u16 w, u16 h) {
+    touchPosition touched;
+    hidTouchRead(&touched);
+    u16 touch_x = touched.px,
+        touch_y = touched.py;
+
+    // Check if it's within the X and Y axi, and that the touch is happening!
+    if (touch_x >= x && touch_x <= x + w)
+        if (touch_y >= y && touch_y <= y + h )
+            return true;
+
+    return false;
+}
+
 int main() {
     gfxInitDefault();
 
