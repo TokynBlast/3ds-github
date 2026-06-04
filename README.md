@@ -41,5 +41,5 @@ All networking manipulation is FOSS and public domain!<br>
 This is in hopes of helping other developers implement moderinzation teqniques to their code, and help with other development, feel free to take it, modify it, claim it as your own, whatevery you want!
 
 ## How to contribute
-To contribute, head to [here](https://github.com/tokynblasty/3ds-github/issues), and make a report.<br>
+To contribute, head to [here](https://github.com/tokynblast/3ds-github/issues), and make a report.<br>
 Or, fork 3DS GitHub, make changes, then push them.
