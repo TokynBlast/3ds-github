@@ -125,10 +125,6 @@ int main() {
 
         if (!hasInternet()) {
             C2D_DrawText(&offline, C2D_WithColor, 10.0f, 55.0f, 0.5f, 0.7f, 0.7f, WHITE);
-        } else {
-            if (state.acc_stat == CurrentState::AccountStatus::SignedOut) {
-                C2D_DrawRectSolid(100.0f, 20.0f, 0.0f, 90.0f, 30.0f, DARK_BLUE);
-            }
         }
 
         // Fill in bottom screen, then start drawing everything that belongs there
