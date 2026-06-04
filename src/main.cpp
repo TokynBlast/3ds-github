@@ -91,7 +91,7 @@ int main() {
     newText(login_to_access_acc, generalTexBuff, "Please sign in to access your\nGitHub account.");
     newText(pretty_name, pretty_name_buffer, "");
 
-    newText(device_flow_prompt, generalTexBuff, "Go to github.com/login/device\nand enter this code:\n\n\nA - Accept\bY - Get new code");
+    newText(device_flow_prompt, generalTexBuff, "Go to github.com/login/device\nand enter this code:\n\n\n\n\n\nA - Accept\nY - Get new code");
 
     DeviceCodeResp dcr = {};
     char token[64] = {};
