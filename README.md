@@ -25,16 +25,20 @@
   </a>
 </p>
 
-<!-- <p align="center">
-  <a href="#usage">Usage</a> •
-</p> -->
+<p align="center">
+  <a href="#notes">Notes</a> •
+</p>
 <!-- <p align="center">
   <img src="content/preview.gif" alt="Preview of 3DS GitHub">
 </p> -->
 
-<!-- This is used to prevent a grouping bar between the gif and Usage -->
+<!-- This is used to prevent a grouping bar between the gif and Notes -->
 <br>
 
+## Notes
+3DS GitHub implements its own protocols for the web, since the 3DS is so old.<br>
+All networking manipulation is FOSS and public domain!<br>
+This is in hopes of helping other developers implement moderinzation teqniques to their code, and help with other development, feel free to take it, modify it, claim it as your own, whatevery you want!
 
 ## How to contribute
 To contribute, head to [here](https://github.com/tokynblasty/3ds-github/issues), and make a report.<br>
