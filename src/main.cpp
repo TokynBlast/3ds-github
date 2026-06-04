@@ -87,7 +87,7 @@ int main() {
     C2D_Text user_code_text;
 
     newText(title, generalTexBuff, "3DS GitHub");
-    newText(online, generalTexBuff, "You're currently offline.\nPlease connect to the internet\nto access GitHub.");
+    newText(offline, generalTexBuff, "You're currently offline.\nPlease connect to the internet\nto access GitHub.");
     newText(login_to_access_acc, generalTexBuff, "Please sign in to access your\nGitHub account.");
     newText(pretty_name, pretty_name_buffer, "");
 
@@ -124,6 +124,7 @@ int main() {
         C2D_DrawText(&title, C2D_WithColor, 10.0f, 10.0f, 0.4f, 2.0f, 2.0f, WHITE);
 
         if (!hasInternet()) {
+            C2D_DrawText(&offline, C2D_WithColor, 10.0f, 55.0f, 0.5f, 0.7f, 0.7f, WHITE);
         } else {
             if (state.acc_stat == CurrentState::AccountStatus::SignedOut) {
                 C2D_DrawRectSolid(100.0f, 20.0f, 0.0f, 90.0f, 30.0f, DARK_BLUE);
