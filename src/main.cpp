@@ -163,7 +163,7 @@ int main() {
                         }
                     } else {
                         // instruction
-                        C2D_DrawText(&device_flow_prompt, C2D_WithColor, 50.0f, 10.0f, 0.0f, 0.55f, 0.55f, WHITE);
+                        C2D_DrawText(&device_flow_prompt, C2D_WithColor, 60.0f, 10.0f, 0.0f, 0.55f, 0.55f, WHITE);
                         // big user code
                         C2D_DrawText(&user_code_text, C2D_WithColor, 60.0f, 70.0f, 0.5f, 1.4f, 1.4f, WHITE);
 
