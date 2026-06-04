@@ -28,7 +28,7 @@ APP_DESC    := Browse and interact with GitHub from your 3DS
 APP_AUTHOR  := MeiMei
 ICON        := icon.png
 
-all: $(BUILD)/$(TARGET).3dsx $(BUILD)/$(TARGET).cia
+all: $(BUILD)/cacert.h $(BUILD)/$(TARGET).3dsx $(BUILD)/$(TARGET).cia
 	@echo "I suggest using azahar to emulate the 3DS if you can't use a real one!"
 
 $(BUILD)/$(TARGET).elf: $(OFILES)
