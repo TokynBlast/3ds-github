@@ -13,13 +13,8 @@ class Settings {
           Count,
       };
 
-      enum class Actions {
-          LogOut,
-          LogIn,
-          ChangeAccount,
-      };
-
-      struct OpenSettings {
+      struct OpenSettings
+      {
           float font_size = 0.7f;
       };
 
