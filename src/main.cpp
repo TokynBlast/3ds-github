@@ -63,6 +63,13 @@ int main() {
     }
 
     acInit();
+    httpcInit(0);
+    u32 certChain = net_create_cert_chain();
+
+    // Init program
+    Settings settings;
+    CurrentState state;
+    state.actions.reserve(20);
 
     C2D_Prepare();
 
