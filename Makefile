@@ -43,7 +43,10 @@ $(BUILD)/$(TARGET).3dsx: $(BUILD)/$(TARGET).elf $(SMDH)
 $(BUILD)/$(TARGET).cia: $(BUILD)/$(TARGET).elf $(SMDH)
 	makerom -f cia -o $@ -target t -elf $< -rsf gh.rsf -icon $(SMDH)
 
-$(BUILD)/%.o: $(SOURCES)/%.cpp | $(BUILD)
+$(BUILD)/cacert.h: src/assets/cacert.pem | $(BUILD)
+	python3 src/tools/pem_to_header.py $< $@
+
+$(BUILD)/%.o: $(SOURCES)/%.cpp $(BUILD)/cacert.h | $(BUILD)
 	$(CXX) $(CXXFLAGS) $(INCLUDE) -c $< -o $@
 
 $(BUILD):
