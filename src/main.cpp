@@ -42,8 +42,10 @@ int main() {
     // Safer initalization; If it doesn't work, exit
     if (!C2D_Init(C2D_DEFAULT_MAX_OBJECTS) || !C3D_Init(C3D_DEFAULT_CMDBUF_SIZE))
     {
-      gfxExit();
-      return 1;
+        C2D_Fini();
+        C3D_Fini();
+        gfxExit();
+        return 1;
     }
 
     acInit();
