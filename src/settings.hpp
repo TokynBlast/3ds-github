@@ -16,6 +16,8 @@ class Settings {
       struct OpenSettings
       {
           float font_size = 0.7f;
+          u32 background_color = C2D_Color32(0x00, 0x00, 0x00, 0x00),
+              font_color = C2D_Color32(0x00, 0x00, 0x00, 0x00);
       };
 
       // Settings that should be hidden, or the user should have no reason to modify directly
