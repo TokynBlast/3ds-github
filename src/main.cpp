@@ -1,7 +1,17 @@
 #include <3ds.h>
 #include <citro2d.h>
 #include "settings.hpp"
+#include <3ds/services/ac.h>
+#include <vector>
+#include "state.hpp"
+#define STB_IMAGE_IMPLEMENTATION
+#include "stb_image.h"
+#include <3ds/services/httpc.h>
+#include "cacert.h"
+#include "network.hpp"
+#include "token.hpp"
 
+// Make a new text object on a specified buffer
 #define newText(name, buff, text) \
         C2D_Text name; \
         C2D_TextParse(&name, buff, text); \
@@ -44,9 +54,27 @@ int main() {
     C3D_RenderTarget* bot = C2D_CreateScreenTarget(GFX_BOTTOM, GFX_LEFT);
 
     newBuff(generalTexBuff, 2048);
+    // The GitHub display name allows up to 255 chars.
+    // However, emojis and other special characters take up two instead,
+    // meaning 127 special chars at most, which take up 508 bytes.
+    // Finally, we account for '\0' :)
+    newBuff(pretty_name_buffer, 509);
+    newBuff(user_code_buf, 16); // "XXXX-XXXX\0" + breathing room
+
+    C2D_Text user_code_text;
 
     newText(title, generalTexBuff, "3DS GitHub");
     newText(online, generalTexBuff, "You're currently offline.\nPlease connect to the internet\nto access GitHub.");
+    newText(login_to_access_acc, generalTexBuff, "Please sign in to access your\nGitHub account.");
+    newText(pretty_name, pretty_name_buffer, "");
+
+    newText(device_flow_prompt, generalTexBuff, "Go to github.com/login/device\nand enter this code:\n\n\nA - Accept\bY - Get new code");
+
+    DeviceCodeResp dcr = {};
+    char token[64] = {};
+    bool dcr_fetched = false;
+    bool waiting_for_auth = false;
+    u64 last_poll_time = 0;
 
     // Run till the user exits :)
     while (aptMainLoop())
@@ -85,7 +113,45 @@ int main() {
                 C2D_DrawRectSolid(50.0f, 0.0f, 00.0f, GSP_SCREEN_WIDTH + 40, GSP_SCREEN_HEIGHT_BOTTOM, BLACK);
                 break;
             case Settings::SideBarCat::MyAccount:
-                C2D_DrawCircle(0.0f, 0.0f, 0.0f, 5.0f, BLACK, WHITE, LIGHT_GRAY, GRAY);
+                if (settings.internal.signed_in) {
+                    C2D_DrawText(&pretty_name, C2D_WithColor, 20.0f, 50.0f, 0.0f, 0.6f, 0.6f, WHITE);
+                } else {
+                    if (!waiting_for_auth) {
+                        C2D_DrawText(&login_to_access_acc, C2D_WithColor, 50.0f, 20.0f, 0.0f, 0.6f, 0.7f, WHITE);
+                        C2D_DrawRectSolid(100.0f, 55.0f, 0.0f, 90.0f, 30.0f, DARK_BLUE);
+
+                        if (touchedThere(100, 55, 90, 30) && !dcr_fetched) {
+                            if (github_request_device_code(certChain, &dcr)) {
+                                dcr_fetched = true;
+                                waiting_for_auth = true;
+                                last_poll_time = osGetTime();
+
+                                // parse the user code into our text object
+                                C2D_TextBufClear(user_code_buf);
+                                C2D_TextParse(&user_code_text, user_code_buf, dcr.user_code);
+                                C2D_TextOptimize(&user_code_text);
+                            }
+                        }
+                    } else {
+                        // instruction
+                        C2D_DrawText(&device_flow_prompt, C2D_WithColor, 50.0f, 10.0f, 0.0f, 0.55f, 0.55f, WHITE);
+                        // big user code
+                        C2D_DrawText(&user_code_text, C2D_WithColor, 60.0f, 70.0f, 0.5f, 1.4f, 1.4f, WHITE);
+
+                        // poll every dcr.interval seconds
+                        u64 now = osGetTime();
+                        if (now - last_poll_time >= (u64)dcr.interval * 1000) {
+                            last_poll_time = now;
+                            if (github_poll_token(certChain, dcr.device_code, token, sizeof(token))) {
+                                save_token(token);
+                                state.acc_stat = CurrentState::AccountStatus::SignedIn;
+                                settings.internal.signed_in = true;
+                                waiting_for_auth = false;
+                                dcr_fetched = false;
+                            }
+                        }
+                    }
+                }
                 break;
             case Settings::SideBarCat::Search:
                 break;
