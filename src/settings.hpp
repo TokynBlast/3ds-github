@@ -3,11 +3,13 @@
 class Settings {
   public:
       enum class SideBarCat {
-          Settings,
-          Search,
+          // The users account
           MyAccount,
-          // This is used to track the total, and therefore MUST ALWAYS
-          // go at the end of the enum, or it WILL break.
+          Search,
+          Settings,
+          // ## DO NOT USE
+          // This is used internally with the cycling functions.
+          // It it not meant for anywhere else.
           Count,
       };
 
@@ -48,7 +50,7 @@ class Settings {
 
       OpenSettings normal;
       InternalSettings internal;
-      SideBarCat sbar_category = SideBarCat::Settings;
+      SideBarCat sbar_category = SideBarCat::MyAccount;
 
       Settings() : normal(), internal() {}
 };
