@@ -109,6 +109,8 @@ int main() {
             settings.cycleCatsLeft();
         } else if (keys & KEY_R) {
             settings.CycleCatsRight();
+        } else if (keys & KEY_START) {
+            state.actions.push_back(Actions::Reload);
         }
 
         C3D_FrameBegin(C3D_FRAME_SYNCDRAW);
