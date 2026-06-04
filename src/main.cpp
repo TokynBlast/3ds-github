@@ -7,15 +7,15 @@
         C2D_TextParse(&name, buff, text); \
         C2D_TextOptimize(&name);
 
-#define GRAY C2D_Color32(0x70, 0x70, 0x70, 0xFF)
-#define WHITE C2D_Color32(0xFF, 0xFF, 0xFF, 0xFF)
-#define BLACK C2D_Color32(0x00, 0x00, 0x00, 0xFF)
-#define DARK_GRAY C2D_Color32(0x40, 0x40, 0x40, 0xFF)
-#define LIGHT_GRAY C2D_Color32(0x90, 0X90, 0X90, 0XFF)
-#define DARK_BLUE C2D_Color32(0X20, 0X20, 0XFF, 0XFF)
-
 #define newBuff(name, size) \
         C2D_TextBuf name = C2D_TextBufNew(size);
+
+#define GRAY C2D_Color32(0x70, 0x70, 0x70, 0xFF) // RGB HEX: #707070
+#define WHITE C2D_Color32(0xFF, 0xFF, 0xFF, 0xFF) // RGB HEX: #FFFFFF
+#define BLACK C2D_Color32(0x00, 0x00, 0x00, 0xFF) // RGB HEX: #000000
+#define DARK_GRAY C2D_Color32(0x40, 0x40, 0x40, 0xFF) // RGB HEX: #404040
+#define LIGHT_GRAY C2D_Color32(0x90, 0X90, 0X90, 0XFF) // RGB HEX: #909090
+#define DARK_BLUE C2D_Color32(0x20, 0x20, 0xFF, 0xFF) // RGB HEX: #2020FF
 
 bool hasInternet()
 {
