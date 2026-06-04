@@ -34,7 +34,6 @@ bool hasInternet()
     return status > 0;
 }
 
-
 // Checks whether the user clicked within an area
 bool touchedThere(u16 x, u16 y, u16 w, u16 h) {
     touchPosition touched;
