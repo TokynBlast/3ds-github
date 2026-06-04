@@ -177,6 +177,7 @@ int main() {
                 }
                 break;
             case Settings::SideBarCat::Search:
+                C2D_DrawRectSolid(100.0f, 20.0f, 0.0f, 90.0f, 30.0f, DARK_BLUE);
                 break;
             case Settings::SideBarCat::Count:
                 // Incase we somehow get here...
